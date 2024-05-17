@@ -1,0 +1,100 @@
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/mystyle.css">
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</head>
+<style>
+	.valid {
+		color: red;
+		font-size: 10pt;
+	}
+
+	.emailme {
+		color: cornflowerblue;
+		font-size: 14pt;
+	}
+</style>
+<section class="vh-100">
+	<div class="container-fluid h-custom">
+
+		<div th:if="${message}">
+			<script>
+				alert("OTP Salah, Coba Cek Lagi!")
+			</script>
+		</div>
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col-md-9 col-lg-6 col-xl-5">
+				<img src="/image/xsis.png" class="img-fluid" alt="Sample image">
+			</div>
+			<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+				<form name="myform" action="/otp/konfirotp" method="POST" onsubmit="return validate()">
+
+					<table class="table">
+
+						<!-- OTP input -->
+						<div class="emailme"><label>Masukan Kode OTP yang telah dikirimkan Pada Email</label></div>
+						<div class="form-outline mb-4">
+							<input type="text" name="token" id="form3Example3" class="form-control form-control-lg">
+							<span class="valid" id="otp"></span>
+
+						</div>
+						<div class="text-center text-lg-start mt-4 pt-2">
+							
+								<button type="button" class="btn btn-light" onclick="kirimotp()">Kirim Ulang Kode OTP</button>
+						</div>
+
+						<div class="text-center text-lg-start mt-4 pt-2">
+							<input type="submit" class="btn btn-primary" value="Konfirmasi OTP">
+						</div>
+
+					</table>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script>
+	function validate() {
+		var otp = document.forms["myform"]["token"].value;
+		if (otp == "") {
+			$('#otp').html("OTP Wajib diisi")
+			return false;
+		}
+		/*else {
+			$.ajax({
+				url: '/user/catcekemail/' + email,
+				type: 'get',
+				data: email,
+				contentType: 'application/json',
+				success: function (result) {
+					console.log(result)
+					if (result.length != 0) {
+						$('#email').html("Email Tidak Bisa Didaftar")
+						return false;
+					}
+					else{
+						viewotp()
+					
+
+				}
+			})}
+		}*/
+	}
+	function kirimotp() {
+		$.ajax({
+			url: '/user/cekemailulang/'+email,
+			type: 'post',
+			contentType: 'application/json',
+			success: function (result) {
+				console.log(result)
+			}
+		})
+	}
+</script>
+
+</html>

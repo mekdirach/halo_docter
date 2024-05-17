@@ -1,0 +1,622 @@
+<!Doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title> dokterhalo::289 </title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+
+</head>
+
+<body>
+	<div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="background-color: lightgray;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					...
+				</div>
+				<!--div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </di-->
+			</div>
+		</div>
+	</div>
+
+	<body>
+		<div class="modal fade" id="mymodal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content" style="background-color: lightgray;">
+					<div class="modal-header">
+						<h5 class="modal-title2" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body2">
+						...
+					</div>
+					<!--div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div-->
+				</div>
+			</div>
+		</div>
+
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2EB3AB;">
+			<!-- Container wrapper -->
+			<div class="container">
+				<!-- Navbar brand -->
+				<a class="navbar-brand" href="#"><img id="MDB-logo"
+						src="https://xsis.academy/wp-content/uploads/2017/07/logo-Xsis-Academy_etg.png"
+						draggable="false" height="30" /></a>
+
+				<!-- Toggle button -->
+				<button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+					data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<i class="fas fa-bars"></i>
+				</button>
+
+				<!-- Collapsible wrapper -->
+				<div class="collapse navbar-collapse">
+					<ul class="navbar-nav ms-3">
+						<li class="nav-item">
+							<button onClick="login(this.value)" class="btn btn-outline-dark">Login</button>
+						</li>
+						<li class="nav-item">
+							<button onClick="daftar()" class="btn btn-outline-dark">Daftar</button>
+						</li>
+						<br>
+						<li class="nav-item">
+							<button onclick="daftarlogin()" class="btn btn-outline-dark">Daftar Login</button>
+						</li>
+					</ul>
+				</div>
+				<!-- Collapsible wrapper -->
+			</div>
+			<!-- Container wrapper -->
+		</nav>
+		<!-- Navbar -->
+
+
+
+		<body>
+			<div th:if="${message}">
+				<script>
+					alert("Username dan/atau password salah!")
+				</script>
+			</div>
+
+
+			<div class="footer-dark">
+				<footer>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-6 col-md-3 item">
+								<h3>Services</h3>
+								<ul>
+									<li>Web design</a></li>
+									<li>Development</a></li>
+									<li>Hosting</a></li>
+								</ul>
+							</div>
+							<div class="col-sm-6 col-md-3 item">
+								<h3>About</h3>
+								<ul>
+									<li>Company</li>
+									<li>Team</a></li>
+									<li>Careers</a></li>
+								</ul>
+							</div>
+							<div class="col-md-6 item text">
+								<h3>Xsis Academy</h3>
+								<p>Developer Academy, IT Education and IT Training Indonesia – Xsis Academy is a World
+									Class Business Technology that provides trainings in information technology area to
+									produce competent graduates who can take part and be an outstanding performer in
+									professional IT industry.</p>
+							</div>
+							<div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a
+									href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i
+										class="icon ion-social-snapchat"></i></a><a href="#"><i
+										class="icon ion-social-instagram"></i></a></div>
+						</div>
+						<p class="copyright">Xsis © 2022</p>
+					</div>
+				</footer>
+			</div>
+
+
+
+
+		</body>
+
+		<script>
+			function daftarlogin() {
+				var form = '<table class="table table-borderless">'
+				form += '<div class="form-group">'
+				form += '<div>'
+				form += '<tr>'
+				form += '<label>Email</label>'
+				form += '<input class="form-control" type="text" id="email" name="email" required><p id="vali" style="color:red;"></p>'
+				form += '</tr>'
+				form += '</div>'
+				form += '<tr>'
+
+				form += '<label>Password</label>'
+				form += '<div class="input-group" id="show_hide_password">'
+				form += '<input class="form-control" type="password" id="password" name="password" required>'
+				form += '<div><span class="input-group-text"><i class="fa fa-eye-slash" onclick="clikicon()" aria-hidden="true"></i></span></div>'
+				form += '</div>'
+				form += '<p id="val" style="color:red;"></p>'
+				form += '<br>'
+				form += '<div class="text-center">'
+				form += ' <button id="input" onclick="inputlogin()" class="btn btn-info">    LOGIN   </button><br>'
+				form += '<a href="#!" class="text-body" onclick="lupapss()">Lupa password?</a>'
+				form += '<p>atau</p>'
+				form += '<p>Belum Memiliki Akun? <a href="#!" onclick="daftar()">Daftar</a></p>'
+				form += '</div>'
+				form += '</table>'
+				$("#mymodal").modal('show')
+				$(".modal-title").html('Login')
+				$(".modal-body").html(form)
+			}
+
+
+			var input = $("#show_hide_password input").val()
+			var icon = $("#show_hide_password i").val()
+
+			icon.on('click', function (event) {
+				event.preventDefault();
+				if (input.attr("type") = "text") {
+					input.attr('type', 'password')
+					icon.addClass("fa-eye-slash")
+					icon.removeClass("fa-eye")
+
+				} else if (input.attr("type") = "password") {
+					input.attr('type', 'text')
+					icon.removeClass("fa-eye-slash")
+					icon.addClass("fa-eye")
+				}
+			})
+
+			function inputlogin() {
+				var email = $('#email').val().trim().toLowerCase()
+				var pass = $('#password').val().trim().toLowerCase()
+				if (email == "") {
+					document.getElementById("vali").innerHTML = 'Email Wajib Diisi';
+				}
+				else if (pass == "") {
+					document.getElementById("val").innerHTML = 'Password Wajib Diisi';
+				}
+				else if (pass.length < 8) {
+					document.getElementById("val").innerHTML = 'Password Diisi 8 Karakter';
+				}
+				else {
+					/*var data = "{"
+					data += '"email":"' + $('#email').val() + '",'
+					data += '"password":"' + $('#password').val() + '",'
+					data += "}"
+					console.log(data)*/
+					$.ajax({
+						url: '/user/cekemaillogin/' + email,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							if (result.length == 0) {
+								document.getElementById("vali").innerHTML = 'Email Salah';
+
+							}
+							else if (result.length != 0) {
+								$.ajax({
+									url: '/user/cekpassword/' + pass,
+									type: 'get',
+									contentType: 'application/json',
+									success: function (result) {
+										if (result.length == 0) {
+											document.getElementById("vali").innerHTML = '';
+											document.getElementById("val").innerHTML = 'Password Salah';
+										}
+										else if (result.length != 0) {
+											$("#mymodal").modal('hide')
+											login2()
+										}
+									}
+								})
+							}
+
+						}
+					})
+				}
+			}
+			function login2() {
+				var log = '<table class="table table-borderless">'
+				log += '<label>Anda Berhasil Mendaftar Silakan Login</label>'
+				log += '<a class="btn btn-outline-dark align-items-center" href="/home">OK</a>'
+				log += '</table>'
+
+				$("#mymodal2").modal('show')
+				$(".modal-title2").html('Login')
+				$(".modal-body2").html(log)
+			}
+			function login() {
+				$.ajax({
+					url: '/login',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$("#mymodal").modal('show')
+						$(".modal-title").html('Masuk')
+						$(".modal-body").html(result)
+					}
+				})
+			}
+
+			function daftar() {
+
+				var form = '<table class="table table-borderless">'
+				form += '<tr>'
+				form += '<label>Masukan Email Anda kami Akan melakukan pengecekan</label>'
+				form += '<label>Email</label>'
+				form += '<td><input class="form-control" type="text" id="email" name="email" required><p id="val" style="color:red;"></p></td>'
+				form += '</tr>'
+				form += '<div th:if="${message}"></div>'
+				form += '<br>'
+				form += '<tr>'
+				form += '<td><center> <button id="input" onclick="cekemail()" class="btn btn-info">Klik OTP</center></td>'
+				form += '</table>'
+				$("#mymodal").modal('show')
+				$(".modal-title").html('Daftar Akun')
+				$(".modal-body").html(form)
+			}
+
+			function cekemail() {
+				var email = $('#email').val().trim().toLowerCase()
+
+				if (email == "") {
+					document.getElementById("val").innerHTML = 'Email Wajib Diisi';
+				}
+				else {
+					$.ajax({
+						url: '/user/catcekemail/' + email,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							console.log(result)
+							if (result.length != 0) {
+								document.getElementById("val").innerHTML = 'Email Sudah Ada!'
+							}
+							else {
+								save()
+							}
+						}
+					})
+				}
+			}
+
+			function save() {
+
+				var cek = '{'
+				cek += '"email":"' + $('#email').val() + '"'
+				cek += '}'
+				$.ajax({
+
+					url: '/otp/kirimemail/',
+					type: 'post',
+					data: cek,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal').modal('hide')
+						verifikasiEmail()
+					}
+				})
+
+			}
+
+			function verifikasiEmail() {
+				var form = '<table class="table table-borderless">'
+				form += '<tr>'
+				form += '<label>Masukan Kode OTP yang telah di kirim ke Email Anda!</label>'
+				form += '<td><input class="form-control" type="text" id="token" name="token" required><p id="vali" style="color:red;"></p></td>'
+				form += '<input id="mail" value="' + $('#email').val() + '" type="text" hidden>'
+				form += '</tr>'
+				form += '<br>'
+				form += '<tr>'
+				form += '<td><center> <button type="button" class="btn btn-light" onclick="kirimotp()">Kirim Ulang Kode OTP</button> <br><br>'
+				form += '<button id="input" onclick="cektoken()" class="btn btn-info">Konfirmasi OTP</center></td>'
+				form += '</table>'
+
+				$("#mymodal2").modal('show')
+				$(".modal-title2").html('Verifikasi E-Mail')
+				$(".modal-body2").html(form)
+			}
+			function cektoken() {
+				var token = $('#token').val()
+				if (token == "") {
+					document.getElementById("vali").innerHTML = 'Token Wajib Diisi';
+				}
+				else {
+					$.ajax({
+						url: '/otp/cekToken/' + token,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							console.log(result)
+							if (result.length == 0) {
+								document.getElementById("vali").innerHTML = 'Kode OTP Salah!'
+							}
+							else if (result.length != 0) {
+								saveotp()
+							}
+
+						}
+					})
+				}
+			}
+			function saveotp() {
+				var json = '{'
+				json += '"email":"' + $('#mail').val() + '",'
+				json += '"token":"' + $('#token').val() + '"'
+				json += '}'
+				console.log(json)
+				$.ajax({
+					url: '/otp/cekotp/',
+					type: 'post',
+					data: json,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal2').modal('hide')
+						viewpass()
+					}
+				})
+			}
+
+			function viewpass() {
+				var pass = '<table class="table table-borderless">'
+				pass += '<label>Masukan Password Baru Untuk Akun Anda</label>'
+				pass += '<tr>'
+				pass += '<td><label>Password</label></td>'
+				pass += '</tr>'
+				pass += '<tr>'
+				pass += '<td><input class="form-control" type="password" id="password" name="password" required><p id="valipass" style="color:red;"></p></td>'
+				pass += '</tr>'
+				pass += '<tr>'
+				pass += '<tr>'
+				pass += '<td><label>Konfirmasi Password</label></td>'
+				pass += '</tr>'
+				pass += '<tr>'
+				pass += '<td><input class="form-control" type="password" id="conpass" name="conpass" required><p id="konfirmasi" style="color:red;"></p></td>'
+				pass += '</tr>'
+				pass += '<tr>'
+				pass += '<input id="email" value="' + $('#email').val() + '" type="text" hidden>'
+				pass += '<tr>'
+				pass += '<td><center> <button id="input" onclick="setpass()" class="btn btn-info">Set Password</center></td>'
+				pass += '</table>'
+				var input = $("#show_hide_password input");
+				var icon = $("#show_hide_password i");
+
+				icon.on('click', function (event) {
+					event.preventDefault();
+
+					if (input.attr("type") === "text") {
+						input.attr('type', 'password');
+						icon.addClass("fa-eye-slash");
+						icon.removeClass("fa-eye");
+
+					} else if (input.attr("type") === "password") {
+						input.attr('type', 'text');
+						icon.removeClass("fa-eye-slash");
+						icon.addClass("fa-eye");
+					}
+				});
+
+				var input2 = $("#show_hide_password2 input");
+				var icon2 = $("#show_hide_password2 i");
+
+				icon2.on('click', function (event) {
+					event.preventDefault();
+
+					if (input2.attr("type") === "text") {
+						input2.attr('type', 'password');
+						icon2.addClass("fa-eye-slash");
+						icon2.removeClass("fa-eye");
+
+					} else if (input2.attr("type") === "password") {
+						input2.attr('type', 'text');
+						icon2.removeClass("fa-eye-slash");
+						icon2.addClass("fa-eye");
+					}
+				});
+				$("#mymodal").modal('show')
+				$(".modal-title").html('Set Password')
+				$(".modal-body").html(pass)
+			}
+
+			function setpass() {
+				var pass = $('#password').val()
+				var conpass = $('#conpass').val()
+				if (pass == "" || pass.length < 8) {
+					document.getElementById("valipass").innerHTML = 'Password Wajib Diisi..... Min8';
+				}
+				else if (conpass == "") {
+					document.getElementById("konfirmasi").innerHTML = 'Konfirmasi Password Wajib Diisi';
+				}
+				else if (pass != conpass) {
+					document.getElementById("konfirmasi").innerHTML = 'Konfirmasi Password dan Password Harus Sama';
+				}
+				else {
+					$.ajax({
+						url: '/user/cekpassword/' + pass,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							console.log(result)
+							if (result.length != 0) {
+								document.getElementById("valipass").innerHTML = 'Password Sudah Pernah Terdaftar!'
+							}
+							else {
+								savepass()
+							}
+
+						}
+					})
+
+				}
+			}
+
+			function savepass() {
+				$('#mymodal').modal('hide')
+				viewdaftar()
+				/*var json = '{'
+				//json += '"email":"' + $('#email').val() + '",'
+				json += '"password":"' + $('#password').val() + '"'
+				json += '}'
+				console.log(json)
+				$.ajax({
+					url: '/user/setpass/',
+					type: 'post',
+					data: json,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal').modal('hide')
+						viewdaftar()
+					}
+				})*/
+			}
+
+			function viewdaftar() {
+				var daf = '<table class="table table-borderless">'
+				daf += '<tr><td>'
+				daf += '<input id="password" name="password" value="' + $('#password').val() + '" type="text" hidden>'
+				daf += '<input id="mail" name="email" value="' + $('#email').val() + '" type="text" hidden>'
+				daf += '</td></tr>'
+				daf += '<tr><td>'
+				daf += '<div class="form-outline mb-4">'
+				daf += '<label>Nama Lengkap</label><div>'
+				daf += '<input class="form-control" type="text" id="fullname"  name="fullname" required><p id="valdaf" style="color:red;"></p>'
+				daf += '</div>'
+				daf += '</div>'
+				daf += '</td></tr>'
+
+				daf += '<tr><td>'
+				daf += '<div class="form-outline mb-4">'
+				daf += '<label>Nomor Lengkap</label><div>'
+				daf += '<input class="form-control" type="number" id="mobilephone" name="mobilephone" required><p id="valnomor" style="color:red;"></p>'
+				daf += '</div>'
+				daf += '</div>'
+				daf += '</td></tr>'
+
+				daf += '<tr><td>'
+				daf += '<div class="form-outline mb-4">'
+				daf += '<label>Daftar Sebagai</label><div>'
+				daf += '<select class="form-select form-control-lg" id="role" name="role" "><p id="valdaf" style="color:red;"></p>'
+				daf += '<span class="valid" id="role"></span></div>'
+				daf += '</div>'
+				daf += '</td></tr>'
+				daf += '<br>'
+				daf += '<tr><p id="terdaftar" style="color:blue;"></p>'
+				daf += '<td><center> '
+				daf += '<button id="input" onclick="daftarakun()" class="btn btn-info">Daftar</center></td>'
+				daf += '</table>'
+				$("#mymodal2").modal('show')
+				$(".modal-title2").html('Daftar')
+				$(".modal-body2").html(daf)
+
+				$.ajax({
+					url: '/user/role/',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (result) {
+						var rol = '';
+						for (i = 0; i < result.length; i++) {
+							rol += '<option value="' + result[i].id + '">' + result[i].name + '</option>'
+						}
+						$('#role').html(rol)
+
+					}
+				})
+
+			}
+
+			function daftarakun() {
+				var fullname = $('#fullname').val()
+				if (fullname == "") {
+					document.getElementById("valdaf").innerHTML = 'Nama Wajib Diisi';
+				}
+				var mobilephone = $('#mobilephone').val()
+				if (mobilephone == "") {
+					document.getElementById("valnomor").innerHTML = 'Nomber Phone Password Wajib Diisi';
+				}
+
+				else {
+					viewakun()
+				}
+			}
+
+			function viewakun() {
+				var jso = '{'
+				jso += '"email":"' + $('#mail').val() + '",'
+				jso += '"password":"' + $('#password').val() + '",'
+				jso += '"fullname":"' + $('#fullname').val() + '",'
+				jso += '"mobilephone":"' + $('#mobilephone').val() + '",'
+				jso += '"role_id":' + $('#role').val() + ''
+				jso += '}'
+				$.ajax({
+					url: '/user/daftarall/',
+					type: 'post',
+					data: jso,
+					contentType: 'application/json',
+					success: function (result) {
+						$.ajax({
+							url: '/api/daftarbiodata',
+							type: 'post',
+							data: jso,
+							contentType: 'application/json',
+							success: function (result) {
+								console.log(result)
+								$('#mymodal2').modal('hide')
+								terdaftar()
+							}
+						})
+						console.log(result)
+					}
+				})
+			}
+
+			function terdaftar() {
+				var ter = '<table class="table table-borderless">'
+				ter += '<tr>'
+				ter += '<label class"terdaftar">Pendaftaran Anda Telah Berhasil!. Silakan Login dengan akun Anda</label>'
+				ter += '</tr>'
+				ter += '<br>'
+				ter += '<tr>'
+				ter += '<td><center>'
+				ter += '<button id="input" onclick="berhasil()" class="btn btn-info">OK</center></td>'
+				ter += '</table>'
+
+				$("#mymodal").modal('show')
+				$(".modal-title").html('Berhasilll!')
+				$(".modal-body").html(ter)
+			}
+			function berhasil() {
+				$("#mymodal").modal('hide')
+			}
+		</script>
+	</body>
+
+</html>

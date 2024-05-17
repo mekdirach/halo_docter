@@ -1,0 +1,276 @@
+<html lang="en" xmlns="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/layout}">
+
+<head>
+	<title>Prducts Barang</title>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<h1> Kategori Fasilitas Kesehatan</h1>
+
+		<p align="right">
+			<button onclick="addform(this.value)" class="btn btn-warning">+ Tambah</button>
+		</p>
+		<table class="display" width="100%" id="myTable">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="dataproduct">
+
+
+			</tbody>
+		</table>
+
+		<script>
+			reloadData();
+			function reloadData() {
+				$.ajax({
+					url: '/api/category',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (result) {
+
+						var str = ""
+						for (i = 0; i < result.length; i++) {
+							str += '<tr>'
+							str += '<td>' + result[i].name + '</td>'
+							str += '<td>'
+							str += '<button class="btn btn-labeled btn-primary" value="' + result[i].id + '" onclick="editform(this.value)">Edit <span class="btn-label"><i class="fa fa-pencil"></i></span></button>';
+							str += '<button  class="btn btn-labeled btn-danger" value="' + result[i].id + '" onclick="deleteform(this.value)">Hapus <span class="btn-label"><i class="fa fa-trash"></i></span></button>';
+							str += '</td>'
+							str += '</tr>'
+						}
+						$('#dataproduct').html(str)
+
+
+					}
+				})
+			}
+
+			$(document).ready(function () {
+				$('#myTable').DataTable({
+					"bPaginate": false,
+					"bLengthChange": false,
+					"bFilter": true,
+					"bInfo": false,
+					"bAutoWidht": false,
+					"bSort": false
+				});
+			})
+
+
+			function addform() {
+				var form = '<table class="table">'
+				form += '<tr>'
+				form += '<td> Name</td><td><input class="form-control" type="text" id="name" required><p id="val" style="color:red;"></p></td>'
+				form += '</tr>'
+				form += '<br>'
+				form += '<tr>'
+				form += '<td ><button class="btn btn-warning" onclick="javacript:location.replace(\'/category/index\')">Cancel</button></td>'
+				form += '<td colspan="2"> <button  onclick="ceksave()" class="btn btn-labeled btn-primary">Simpan</td>'
+				form += '</table>'
+				$('#mymodal').modal('show')
+				$('.modal-title').html('Tambah Category Medical')
+				$('.modal-body').html(form)
+			}
+			function ceksave() {
+				var nama = $('#name').val().trim().toLowerCase()
+				if (nama == "") {
+					document.getElementById("val").innerHTML = 'Nama Wajib Diisi';
+				}
+				else {
+					$.ajax({
+						url: '/api/categorycek/' + nama,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							console.log(result)
+							if (result.length != 0) {
+								document.getElementById("val").innerHTML = 'Nama Sudah Ada!'
+							}
+							else {
+								save()
+							}
+						}
+					})
+				}
+			}
+
+			function save() {
+				var today = new Date();
+				var dd = String(today.getDate()).padStart(2, '0');
+				var mm = String(today.getMonth() + 1).padStart(2, '0');
+				var yyyy = today.getFullYear();
+				var hh = today.getHours();
+				var mi = today.getMinutes();
+				var ss = today.getSeconds();
+				today = '"' + yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + mi + ':' + ss + '"'
+				console.log(today)
+
+				var json = '{'
+				json += '"created_by":1,'
+				json += '"is_delete":false,'
+				json += '"name":"' + $('#name').val() + '"'
+				json += '}'
+				console.log(json)
+
+
+				$.ajax({
+
+					url: '/api/insertMedical/',
+					type: 'post',
+					data: json,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal').modal('hide')
+						reloadData()
+					}
+				})
+
+			}
+
+
+
+
+			function editform(id) {
+
+				$.ajax({
+					url: '/api/category/' + id,
+					type: 'get',
+					contentType: 'application/json',
+					success: function (category) {
+						var form = '<class="table">'
+						form += '<tr>'
+						form += '<td> Name</td><td><input class="form-control" type="text" id="name" value="' + category.name + '"><p id="val" style="color:red;"></p></td>'
+						form += '</tr>'
+						form += '<tr>'
+						form += '<br>'
+						form += '<td colspan="2"> <button  onclick="saveid(this.value)" class="btn btn-labeled btn-primary" value="' + category.id + '">Simpan</td>'
+						form += '</tr>'
+						form += '</table>'
+						$('#mymodal').modal('show')
+						$('.modal-title').html('Edit Category Medical')
+						$('.modal-body').html(form)
+					}
+
+				})
+			}
+
+			function saveid(id) {
+				var nama = $('#name').val().trim().toLowerCase()
+				if (nama == "") {
+					document.getElementById("val").innerHTML = 'Nama Wajib Diisi';
+				}
+				else {
+					$.ajax({
+						url: '/api/categorycek/' + nama,
+						type: 'get',
+						contentType: 'application/json',
+						success: function (result) {
+							console.log(result)
+							if (result.length != 0) {
+								document.getElementById("val").innerHTML = 'Nama Sudah Ada!'
+							}
+							else {
+								savekat(id)
+							}
+						}
+					})
+				}
+			}
+			function savekat(id) {
+				var today = new Date();
+				var dd = String(today.getDate()).padStart(2, '0');
+				var mm = String(today.getMonth() + 1).padStart(2, '0');
+				var yyyy = today.getFullYear();
+				var hh = today.getHours();
+				var mi = today.getMinutes();
+				var ss = today.getSeconds();
+				today = '"' + yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + mi + ':' + ss + '"'
+				console.log(today)
+
+				var json = '{'
+				json += '"modified_by":1,'
+				//json += '"modified_on":' + today + ','
+				json += '"name":"' + $('#name').val() + '"'
+				json += '}'
+				console.log(json)
+				$.ajax({
+					url: '/api/editCategory/' + id,
+					type: 'put',
+					data: json,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal').modal('hide')
+						reloadData()
+					}
+				})
+			}
+
+
+			function delete_(id) {
+				var today = new Date();
+				var dd = String(today.getDate()).padStart(2, '0');
+				var mm = String(today.getMonth() + 1).padStart(2, '0');
+				var yyyy = today.getFullYear();
+				var hh = today.getHours();
+				var mi = today.getMinutes();
+				var ss = today.getSeconds();
+				today = '"' + yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + mi + ':' + ss + '"'
+				console.log(today)
+
+				var data = '{'
+				data += '"modified_by":1,'
+				//data += '"deleted_on":' + today + ','
+				data += '"name":"' + $('#name').val() + '",'
+				data += '"is_delete": true'
+				data += '}'
+				$.ajax({
+					url: '/api/editCategory/' + id,
+					type: 'put',
+					data: data,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal').modal('hide')
+						reloadData()
+					}
+
+				})
+			}
+
+
+			function deleteform(id) {
+				$.ajax({
+					url: '/api/category/' + id,
+					type: 'get',
+					contentType: 'application/json',
+					success: function (category) {
+						var del = '<table class="table">'
+						del += '<input id="name" value="' + category.name + '" hidden>'
+						del += '<tr>'
+						del += '<p> Anda Yakin Mau Menghapus data ' + category.name + '?</p>'
+						del += '<button class="btn btn-warning" onclick="javacript:location.replace(\'/category/index\')">Cancel</button>'
+						del += '<button class="btn btn-labeled btn-danger" onclick ="delete_(' + id + ')">Delete</button>'
+						del += '</tr>'
+						del += '</table>'
+						$('#mymodal').modal('show');
+						$('.modal-title').html('Delete Category')
+						$('.modal-body').html(del)
+					}
+				})
+			}
+		</script>
+	</div>
+
+
+</body>
+
+</html>

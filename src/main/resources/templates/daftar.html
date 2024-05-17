@@ -1,0 +1,85 @@
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<style>
+	.valid {
+		color: red;
+		font-size: 10pt;
+	}
+
+	.emailme {
+		color: cornflowerblue;
+		font-size: 14pt;
+	}
+</style>
+<form name="myform" action="/user/cekemail" method="POST" onsubmit="return validate()">
+	<table class="table">
+		<div th:if="${message1}">
+			<script>
+				alert("Maaf Cek Email Anda Lagi/Email Sudah Ada")
+			</script>
+		</div>
+		<div th:if="${messagekirimotp}">
+			<script>
+				alert("Cek Email Anda, OTP Sudah Terkirim")
+			</script>
+		</div>
+		<!-- Email input -->
+		<div class="emailme"><label>Masukan Email Anda kami Akan melakukan pengecekan</label></div>
+		<div class="form-outline mb-4">
+			<label class="form-label" for="form3Example4">Email</label>
+			<input type="text" name="Email" id="form3Example3" class="form-control form-control-lg">
+			<span class="valid" id="valemail"></span>
+
+		</div>
+
+		<div class="text-center text-lg-start mt-4 pt-2">
+			<input type="submit" class="btn btn-primary" value="Login">
+		</div>
+
+	</table>
+
+</form>
+<script>
+	function validate() {
+		var email = document.forms["myform"]["Email"].value;
+		if (email == "" || email.length < 3 || email.length > 200) {
+			$('#valemail').html("Email Wajib diisi")
+			return false;
+		}
+		else {
+			$.ajax({
+				url: '/user/catcekemail/' + email,
+				type: 'get',
+				data: email,
+				contentType: 'application/json',
+				success: function (result) {
+					console.log(result)
+					if (result.length != 0) {
+						$('#email').html("Email Tidak Bisa Didaftar")
+						return false;
+					}
+					/*else{
+						viewotp()
+					}*/
+
+				}
+			})
+		}
+	}
+
+	/*function viewotp() {
+		$.ajax({
+					url: '/konfirmasiotp',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$("#mymodal").modal('show')
+						$(".modal-title").html('Konfirmasi OTP')
+						$(".modal-body").html(result)
+					}
+				})
+	}*/
+
+</script>
+
+</html>

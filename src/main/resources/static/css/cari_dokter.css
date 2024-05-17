@@ -1,0 +1,26 @@
+#lokasi, #nama, #spesialisasi, #tindakan{
+	border-color: #1ba3e4;
+	border-radius: 8px;
+}
+
+#inDokterMsg{
+	text-align: right;
+    display: none;
+    color: red;
+    width: 100%;
+    font-size: 12px;
+}
+
+#inSpesialisasiMsg{
+	position: absolute;
+    display: none;
+    color: red;
+    right: 4%;
+    top: 69%;
+    font-size: 12px;
+}
+
+#inId{
+    display: none;
+}
+

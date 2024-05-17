@@ -1,0 +1,462 @@
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" href="/css/mystyle.css">
+
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+</head>
+<style>
+	.valid {
+		color: red;
+		font-size: 10pt;
+	}
+
+	.terdaftar {
+		color: skyblue;
+		font-size: 14pt;
+	}
+</style>
+<form name="myform" action="/user/ceklogin" method="POST" onsubmit="return validate()">
+	<table class="table">
+
+		<!-- Email input -->
+		<div class="form-outline mb-4">
+			<label class="form-label" for="form3Example4">Email</label>
+			<input type="text" name="Email" id="form3Example3" class="form-control form-control-lg">
+			<span class="valid" id="validateemail"></span>
+
+		</div>
+
+		<!-- Password input -->
+		<div>
+			<label>Password</label>
+			<div class="input-group" id="show_hide_password">
+				<input type="password" name="Password" id="password" class="form-control" autocomplete="off">
+
+				<div>
+					<span class="input-group-text"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+				</div>
+				<br>
+			</div>
+			<span class="valid" id="validatepass"></span>
+		</div>
+
+		<div class="text-center text-lg-start mt-4 pt-2">
+			<input type="submit" class="btn btn-primary" value="Login">
+		</div>
+		<div class="text-center">
+			<a href="#!" class="text-body" onclick="lupapss()">Lupa password?</a>
+			<p>atau</p>
+			<p>Belum Memiliki Akun? <a href="#!" onclick="daftar()">Daftar</a></p>
+		</div>
+
+	</table>
+
+</form>
+
+<script>
+	function validate() {
+		var email = document.forms["myform"]["Email"].value;
+		console.log(email.length)
+		if (email == "" || email.length < 3 || email.length > 200) {
+			$('#validateemail').html("Emial harus diisi....")
+			return false;
+		}
+		var password = document.forms["myform"]["Password"].value;
+		if (password == "" || password.length < 8) {
+			$('#validatepass').html("password harus diisi.... min 8")
+			return false;
+		}
+
+	}
+
+	var input = $("#show_hide_password input");
+	var icon = $("#show_hide_password i");
+
+	icon.on('click', function (event) {
+		event.preventDefault();
+
+		if (input.attr("type") === "text") {
+			input.attr('type', 'password');
+			icon.addClass("fa-eye-slash");
+			icon.removeClass("fa-eye");
+
+		} else if (input.attr("type") === "password") {
+			input.attr('type', 'text');
+			icon.removeClass("fa-eye-slash");
+			icon.addClass("fa-eye");
+		}
+	});
+
+	function lupapss() {
+		var form = '<table class="table">'
+		form += '</table>'
+		$('#mymodal').modal('show')
+		$('.modal-title').html('Lupa Password')
+		$('.modal-body').html(form)
+	}
+
+	function daftar() {
+
+		var form = '<table class="table table-borderless">'
+		form += '<tr>'
+		form += '<label>Masukan Email Anda kami Akan melakukan pengecekan</label>'
+		form += '<label>Email</label>'
+		form += '<td><input class="form-control" type="text" id="email" name="email" required><p id="val" style="color:red;"></p></td>'
+		form += '</tr>'
+		form += '<div th:if="${message}"></div>'
+		form += '<br>'
+		form += '<tr>'
+		form += '<td><center> <button id="input" onclick="cekemail()" class="btn btn-info">Klik OTP</center></td>'
+		form += '</table>'
+		$("#mymodal").modal('show')
+		$(".modal-title").html('Daftar Akun')
+		$(".modal-body").html(form)
+	}
+
+	function cekemail() {
+		var email = $('#email').val().trim().toLowerCase()
+
+		if (email == "") {
+			document.getElementById("val").innerHTML = 'Email Wajib Diisi';
+		}
+		else {
+			$.ajax({
+				url: '/user/catcekemail/' + email,
+				type: 'get',
+				contentType: 'application/json',
+				success: function (result) {
+					console.log(result)
+					if (result.length != 0) {
+						document.getElementById("val").innerHTML = 'Email Sudah Ada!'
+					}
+					else {
+						save()
+					}
+				}
+			})
+		}
+	}
+
+	function save() {
+
+		var cek = '{'
+		cek += '"email":"' + $('#email').val() + '"'
+		cek += '}'
+		$.ajax({
+
+			url: '/otp/kirimemail/',
+			type: 'post',
+			data: cek,
+			contentType: 'application/json',
+			success: function (result) {
+				console.log(result)
+				$('#mymodal').modal('hide')
+				verifikasiEmail()
+			}
+		})
+
+	}
+	function verifikasiEmail() {
+		var form = '<table class="table table-borderless">'
+		form += '<tr>'
+		form += '<label>Masukan Kode OTP yang telah di kirim ke Email Anda!</label>'
+		form += '<td><input class="form-control" type="text" id="token" name="token" required><p id="vali" style="color:red;"></p></td>'
+		form += '<input id="mail" value="' + $('#email').val() + '" type="text" hidden>'
+		form += '</tr>'
+		form += '<br>'
+		form += '<tr>'
+		form += '<td><center> <button type="button" class="btn btn-light" onclick="kirimotp()">Kirim Ulang Kode OTP</button> <br><br>'
+		form += '<button id="input" onclick="cektoken()" class="btn btn-info">Konfirmasi OTP</center></td>'
+		form += '</table>'
+
+		$("#mymodal2").modal('show')
+		$(".modal-title2").html('Verifikasi E-Mail')
+		$(".modal-body2").html(form)
+	}
+
+
+	function cektoken() {
+		var token = $('#token').val()
+		if (token == "") {
+			document.getElementById("vali").innerHTML = 'Token Wajib Diisi';
+		}
+		else {
+			$.ajax({
+				url: '/otp/cekToken/' + token,
+				type: 'get',
+				contentType: 'application/json',
+				success: function (result) {
+					console.log(result)
+					if (result.length == 0) {
+						document.getElementById("vali").innerHTML = 'Kode OTP Salah!'
+					}
+					else if (result.length != 0) {
+						saveotp()
+					}
+
+				}
+			})
+		}
+	}
+	function saveotp() {
+		var json = '{'
+		json += '"token":"' + $('#token').val() + '"'
+		json += '}'
+		console.log(json)
+		$.ajax({
+			url: '/otp/cekotp/',
+			type: 'post',
+			data: json,
+			contentType: 'application/json',
+			success: function (result) {
+				console.log(result)
+				$('#mymodal2').modal('hide')
+				viewpass()
+			}
+		})
+	}
+
+	function viewpass() {
+		var pass = '<table class="table table-borderless">'
+		pass += '<label>Masukan Password Baru Untuk Akun Anda</label>'
+		pass += '<tr>'
+		pass += '<td><label>Password</label></td>'
+		pass += '</tr>'
+		pass += '<tr>'
+		pass += '<td><input class="form-control" type="password" id="password" name="password" required><p id="valipass" style="color:red;"></p></td>'
+		pass += '</tr>'
+		pass += '<tr>'
+		pass += '<tr>'
+		pass += '<td><label>Konfirmasi Password</label></td>'
+		pass += '</tr>'
+		pass += '<tr>'
+		pass += '<td><input class="form-control" type="password" id="conpass" name="conpass" required><p id="konfirmasi" style="color:red;"></p></td>'
+		pass += '</tr>'
+		pass += '<tr>'
+		pass += '<input id="email" value="' + $('#email').val() + '" type="text" hidden>'
+		pass += '<tr>'
+		pass += '<td><center> <button id="input" onclick="setpass()" class="btn btn-info">Set Password</center></td>'
+		pass += '</table>'
+		var input = $("#show_hide_password input");
+		var icon = $("#show_hide_password i");
+
+		icon.on('click', function (event) {
+			event.preventDefault();
+
+			if (input.attr("type") === "text") {
+				input.attr('type', 'password');
+				icon.addClass("fa-eye-slash");
+				icon.removeClass("fa-eye");
+
+			} else if (input.attr("type") === "password") {
+				input.attr('type', 'text');
+				icon.removeClass("fa-eye-slash");
+				icon.addClass("fa-eye");
+			}
+		});
+
+		var input2 = $("#show_hide_password2 input");
+		var icon2 = $("#show_hide_password2 i");
+
+		icon2.on('click', function (event) {
+			event.preventDefault();
+
+			if (input2.attr("type") === "text") {
+				input2.attr('type', 'password');
+				icon2.addClass("fa-eye-slash");
+				icon2.removeClass("fa-eye");
+
+			} else if (input2.attr("type") === "password") {
+				input2.attr('type', 'text');
+				icon2.removeClass("fa-eye-slash");
+				icon2.addClass("fa-eye");
+			}
+		});
+		$("#mymodal").modal('show')
+		$(".modal-title").html('Set Password')
+		$(".modal-body").html(pass)
+	}
+
+	function setpass() {
+		var pass = $('#password').val()
+		var conpass = $('#conpass').val()
+		if (pass == "" || pass.length < 8) {
+			document.getElementById("valipass").innerHTML = 'Password Wajib Diisi..... Min8';
+		}
+		else if (conpass == "") {
+			document.getElementById("konfirmasi").innerHTML = 'Konfirmasi Password Wajib Diisi';
+		}
+		else if (pass != conpass) {
+			document.getElementById("konfirmasi").innerHTML = 'Konfirmasi Password dan Password Harus Sama';
+		}
+		else {
+			$.ajax({
+				url: '/user/cekpassword/' + pass,
+				type: 'get',
+				contentType: 'application/json',
+				success: function (result) {
+					console.log(result)
+					if (result.length != 0) {
+						document.getElementById("valipass").innerHTML = 'Password Sudah Pernah Terdaftar!'
+					}
+					else {
+						savepass()
+					}
+
+				}
+			})
+
+		}
+	}
+
+	function savepass() {
+		$('#mymodal').modal('hide')
+		viewdaftar()
+		/*var json = '{'
+		//json += '"email":"' + $('#email').val() + '",'
+		json += '"password":"' + $('#password').val() + '"'
+		json += '}'
+		console.log(json)
+		$.ajax({
+			url: '/user/setpass/',
+			type: 'post',
+			data: json,
+			contentType: 'application/json',
+			success: function (result) {
+				console.log(result)
+				$('#mymodal').modal('hide')
+				viewdaftar()
+			}
+		})
+	}*/
+	}
+	function viewdaftar() {
+		var daf = '<table class="table table-borderless">'
+		daf += '<tr><td>'
+		daf += '<input id="password" name="password" value="' + $('#password').val() + '" type="text" hidden>'
+		daf += '<input id="mail" name="email" value="' + $('#email').val() + '" type="text" hidden>'
+		daf += '</td></tr>'
+		daf += '<tr><td>'
+		daf += '<div class="form-outline mb-4">'
+		daf += '<label>Nama Lengkap</label><div>'
+		daf += '<input class="form-control" type="text" id="fullname"  name="fullname" required><p id="valdaf" style="color:red;"></p>'
+		daf += '</div>'
+		daf += '</div>'
+		daf += '</td></tr>'
+
+		daf += '<tr><td>'
+		daf += '<div class="form-outline mb-4">'
+		daf += '<label>Nomor Lengkap</label><div>'
+		daf += '<input class="form-control" type="number" id="mobilephone" name="mobilephone" required><p id="valnomor" style="color:red;"></p>'
+		daf += '</div>'
+		daf += '</div>'
+		daf += '</td></tr>'
+
+		daf += '<tr><td>'
+		daf += '<div class="form-outline mb-4">'
+		daf += '<label>Daftar Sebagai</label><div>'
+		daf += '<select class="form-select form-control-lg" id="role" name="role" "><p id="valdaf" style="color:red;"></p>'
+		daf += '<span class="valid" id="role"></span></div>'
+		daf += '</div>'
+		daf += '</td></tr>'
+		daf += '<br>'
+		daf += '<tr><p id="terdaftar" style="color:blue;"></p>'
+		daf += '<td><center> '
+		daf += '<button id="input" onclick="daftarakun()" class="btn btn-info">Daftar</center></td>'
+		daf += '</table>'
+		$("#mymodal2").modal('show')
+		$(".modal-title2").html('Daftar')
+		$(".modal-body2").html(daf)
+
+		$.ajax({
+			url: '/user/role/',
+			type: 'get',
+			contentType: 'application/json',
+			success: function (result) {
+				var rol = '';
+				for (i = 0; i < result.length; i++) {
+					rol += '<option value="' + result[i].id + '">' + result[i].name + '</option>'
+				}
+				$('#role').html(rol)
+
+			}
+		})
+
+	}
+	function daftarakun() {
+		var fullname = $('#fullname').val()
+		if (fullname == "") {
+			document.getElementById("valdaf").innerHTML = 'Nama Wajib Diisi';
+		}
+		var phone = $('#mobilephone').val()
+		if (phone == "") {
+			document.getElementById("valnomor").innerHTML = 'Nomber Phone Password Wajib Diisi';
+		}
+
+		else {
+			savedaftar()
+		}
+	}
+
+	function savedaftar() {
+		var json = '{'
+		json += '"email":"' + $('#mail').val() + '",'
+		json += '"password":"' + $('#password').val() + '",'
+		json += '"fullname":"' + $('#fullname').val() + '",'
+		json += '"mobile_phone":"' + $('#mobilephone').val() + '",'
+		json += '"role_id":' + $('#role').val() + ''
+		json += '}'
+		console.log(json)
+		$.ajax({
+			url: '/user/daftarall/',
+			type: 'post',
+			data: json,
+			contentType: 'application/json',
+			success: function (result) {
+				$.ajax({
+					url: '/api/daftarbiodata',
+					type: 'post',
+					data: json,
+					contentType: 'application/json',
+					success: function (result) {
+						console.log(result)
+						$('#mymodal2').modal('hide')
+						terdaftar()
+					}
+				})
+				console.log(result)
+			}
+		})
+	}
+
+	function terdaftar() {
+		var ter = '<table class="table table-borderless">'
+		ter += '<tr>'
+		ter += '<label class"terdaftar">Pendaftaran Anda Telah Berhasil!. Silakan Login dengan akun Anda</label>'
+		ter += '</tr>'
+		ter += '<br>'
+		ter += '<tr>'
+		ter += '<td><center>'
+		ter += '<button id="input" onclick="berhasil()" class="btn btn-info">OK</center></td>'
+		ter += '</table>'
+		$("#mymodal").modal('show')
+		$(".modal-title").html('Berhasilll!')
+		$(".modal-body").html(ter)
+	}
+	function berhasil() {
+		$("#mymodal").modal('hide')
+	}
+
+</script>
+
+
+</html>

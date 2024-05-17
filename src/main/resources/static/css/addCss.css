@@ -1,0 +1,31 @@
+.txtnama {
+    background-color: lightblue;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid red;
+    border-radius: 5px; 
+}
+.tombol {
+    background-color: aqua;
+    margin: 5px;
+    padding: 8px;
+    border: 0px;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+    
+}
+.tombol:hover {
+    background-color: #1A6772;
+}
+
+.formtable{
+    border: 1px solid lightsalmon;
+    background-color: blanchedalmond;
+}
+
+td{
+    border: 1px solid rgb(132, 178, 187) ;
+    padding: 4px;
+    font-family: arial;
+}

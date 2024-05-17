@@ -1,0 +1,62 @@
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<form name="myform" th:action="@{~/api/janji}" th:object="${appointment}" method="GET" onsubmit="return validate()">
+	<!--<input type="hidden" th:field="*{Id}" value="${Id}">-->
+	<table class="table">
+		<tr>
+			<td>
+			<label>Konsultasi Untuk</label>
+				<select class="form-select" onclick="getrole(this.value)">
+					
+			</td>
+		</tr>
+		<tr>
+			<td >
+			<label>Faskes*</label>
+				<select class="form-select form-control-lg" onclick="getrole(this.value)">
+					<span class="valid" id="validatename"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<label>Waktu Kedatangan*</label>
+				<input type="date" class="form-control form-control-lg" onclick="getrole(this.value)">
+					<span class="valid" id="validatename"></span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td >
+			<label>Tindakan Medis</label>
+				<select class="form-select form-control-lg" onclick="getrole(this.value)">
+					<span class="valid" id="validatename"></span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+			<center>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+				<input type="submit" class="btn btn-primary" value="Buat Janji" onclick="cekketersediaan()">
+			</center>
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+function cekcekketersediaan(){
+	$.ajax({
+					url: '/api/cek',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (form) {
+						$('#mymodal').modal('show')
+						$('.modal-title').html('Edit Produk')
+						$('.modal-body').html(form)
+					}
+				})
+}
+
+</script>
+
+</html>
